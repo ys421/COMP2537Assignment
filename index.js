@@ -48,6 +48,22 @@ app.use(session({
 }
 ));
 
+//authentication - distinguish whether the user logged in or not.
+app.get('/', (req,res) => {
+  if(req.session.authenticated){
+      const buttons = `
+      <button onclick="window.location.href='/members'">Go to Members Area</button><br>
+      <button onclick="window.location.href='/logout'">Log out</button>
+      `;
+  res.send(`<h1>Hello, ${req.session.name}!</h1>${buttons}`);
+  } else {
+      const buttons = `
+      <button onclick="window.location.href='/signup'">Sign up</button><br>
+      <button onclick="window.location.href='/login'">Log in</button>
+      `;
+      res.send(buttons);
+  }
+});
 
 app.get('/nosql-injection', async (req,res) => {
 	var username = req.query.user;
@@ -122,7 +138,35 @@ app.get('/createUser', (req,res) => {
     `;
     res.send(html);
 });
+app.get('/signup', (req, res) => {
+  res.send(`
+    <form method="POST">
+      <label>Name:</label><input type="text" name="name"><br>
+      <label>Email:</label><input type="email" name="email"><br>
+      <label>Password:</label><input type="password" name="password"><br>
+      <input type="submit" value="Sign up">
+    </form>
+  `);
+});
 
+// sign-up form submission route
+app.post('/signup', async (req, res) => {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  });
+  const { error, value } = schema.validate(req.body);
+  if (error) {
+    res.send(`Please provide ${error.details[0].context.label}.<br><a href="/signup">Try again</a>`);
+  } else {
+    const hashedPassword = await bcrypt.hash(value.password, 10);
+    const user = new User({ name: value.name, email: value.email, password: hashedPassword });
+    await user.save();
+    req.session.user = { _id: user._id, name: user.name, email: user.email };
+    res.redirect('/members');
+  }
+});
 
 app.get('/login', (req,res) => {
     var html = `
