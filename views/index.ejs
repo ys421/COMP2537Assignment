@@ -1,0 +1,23 @@
+<%- include("templates/header") %>
+<head>
+  <title>Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container-fluid">
+    <h1 style="text-align: center;">Hello, <%= username %>!</h1>
+  </div>
+  <div class="container-fluid">
+    <img src="/2.jpeg" class="img-responsive center-block" style="padding-top: 30px; padding-bottom: 50px;">
+  </div>
+  <div class="container-fluid">
+    <div class="text-center">
+      <a class="btn btn-primary btn-lg" href="/member" role="button" style="margin-bottom: 10px;">Member's area</a>
+      <a class="btn btn-primary btn-lg" href="/logout" role="button" style="margin-bottom: 10px;">Log out</a>
+    </div>
+  </div>
+</body>
+<%- include("templates/footer") %>

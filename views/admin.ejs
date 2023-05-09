@@ -1,0 +1,62 @@
+<%- include("templates/header") %>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-size: 18px;
+    }
+    
+    .full-width-container {
+      width: 80%;
+    }
+
+    .table-centered {
+      text-align: center;
+    }
+
+    .table-centered th,
+    .table-centered td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .table-centered thead tr {
+      border-bottom: 4px double grey;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <h1 style="text-align: center">Welcome, <%= username %>!</h1>
+  </div>
+  <div class="container-fluid">
+    <h2 style="text-align: center; padding-bottom: 40px;">Admin Dashboard</h2>
+  </div>
+  <div class="container-fluid full-width-container">
+    <table class="table table-hover table-centered">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">User Type</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+        <tr>
+          <td><%= user.username %></td>
+          <td><%= user.user_type %></td>
+          <td>
+            <% if (user.user_type !== 'admin') { %>
+            <a href="/promote/<%= user.username %>">Promote</a>
+            <% } else { %>
+            <a href="/demote/<%= user.username %>">Demote</a>
+            <% } %>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</body>
+<%- include("templates/footer") %>

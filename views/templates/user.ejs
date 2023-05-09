@@ -1,0 +1,10 @@
+<li style="list-style: none; margin-bottom: 10px">
+  <%= user.name %> (<%= user.role %>)
+  <form class="d-inline-block" method="POST" action="/admin/toggle-role">
+    <input type="hidden" name="userId" value="<%= user._id %>" />
+    <input type="hidden" name="action" value="toggle" />
+    <button class="btn btn-primary rounded-pill px-3" type="submit">
+      <%= user.role === 'user' ? 'Promote to Admin' : 'Demote to User' %>
+    </button>
+  </form>
+</li>
